@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { resolve_ergoname } from "ergonames";
-import { sendTransaction } from "tx-fleet";
 
 function SearchBox() {
     const [searchName, setSearchName] = useState("");
@@ -36,7 +35,7 @@ function SearchBox() {
           // let raddr = window.ergo.get_change_address();
           let raddr = window.localStorage.getItem("walletAddress");
           console.log(`Address: ${raddr}`);
-          let tx = await sendTransaction(ergonamePrice, searchName, raddr);
+          let tx = "need fleet";// await sendTransaction(ergonamePrice, searchName, raddr);
           console.log(`TX: ${tx}`);
         })
       };
