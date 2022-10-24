@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { resolve_ergoname } from "ergonames";
+import { resolveErgoname, resolveErgonameRegistrationInformation } from "ergonames";
 
 function SearchBox() {
     const [searchName, setSearchName] = useState("");
@@ -13,18 +13,24 @@ function SearchBox() {
 
     const submitSearch = async () => {
         console.log(`Searching for: ${searchName}`);
-        let addr = await resolve_ergoname(searchName);
-        if (addr === null) {
+        let tokenResolveData = await resolveErgoname(searchName);
+        if (tokenResolveData === null) {
           setResolvedAddress("");
         } else {
-          setResolvedAddress(addr);
+          let address = tokenResolveData.tokenAddress;
+          setResolvedAddress(address);
         };
         console.log(`Resolved address: ${resolvedAddress}`);
-        setRegisteredAddress("3WwKzFjZGrtKAV7qSCoJsZK9iJhLLrUa3uwd4yw52bVtDVv6j5TL");
-        setTokenId("dd43910d75f32a8598c345a578f26e86b90e95dda967f9df3e45eaa1d7dae579");
+        const registrationData = await resolveErgonameRegistrationInformation(searchName);
+        setRegisteredAddress(registrationData.address);
+        setTokenId(registrationData.tokenId);
         setErgonamePrice(300000000);
         setResolvedPrice(300000000);
-        setResolvedDate("Oct 12, 2022");
+        let timestamp = registrationData.timestamp;
+        timestamp = Number(timestamp);
+        let date = new Date(timestamp);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        setResolvedDate(date.toLocaleDateString("en-US", options));
         setHasResolved(true);
       };
     
