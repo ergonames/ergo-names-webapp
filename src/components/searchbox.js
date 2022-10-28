@@ -44,7 +44,9 @@ function SearchBox() {
           let raddr = window.localStorage.getItem("walletAddress");
           console.log(`Address: ${raddr}`);
           let tx = await sendTransaction(ergonamePrice, searchName, raddr);
-          console.log(`TX: ${tx}`);
+          console.log(`TX ID: ${tx.txId} - Box ID: ${tx.boxId}`);
+          let apiResponse = await postAPIInformation(tx.txId, tx.boxId);
+          console.log(`API Response: ${apiResponse}`);
         })
       };
 
@@ -69,6 +71,7 @@ function SearchBox() {
         });
         let json = await response.json();
         console.log(json);
+        return json;
       };
 
       const copyTokenId = () => {
