@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { resolveErgoname, resolveErgonameRegistrationInformation } from "ergonames";
+import { sendTransaction } from "ergonames-tx-lib";
 
 function SearchBox() {
     const [searchName, setSearchName] = useState("");
@@ -14,6 +15,7 @@ function SearchBox() {
     const submitSearch = async () => {
         console.log(`Searching for: ${searchName}`);
         let tokenResolveData = await resolveErgoname(searchName);
+        console.log(`Resolved data: ${tokenResolveData}`);
         if (tokenResolveData === null) {
           setResolvedAddress("");
         } else {
@@ -24,8 +26,8 @@ function SearchBox() {
         const registrationData = await resolveErgonameRegistrationInformation(searchName);
         setRegisteredAddress(registrationData.address);
         setTokenId(registrationData.tokenId);
-        setErgonamePrice(300000000);
-        setResolvedPrice(300000000);
+        setErgonamePrice(1000000);
+        setResolvedPrice(1000000);
         let timestamp = registrationData.timestamp;
         timestamp = Number(timestamp);
         let date = new Date(timestamp);
@@ -41,7 +43,7 @@ function SearchBox() {
           // let raddr = window.ergo.get_change_address();
           let raddr = window.localStorage.getItem("walletAddress");
           console.log(`Address: ${raddr}`);
-          let tx = "need fleet";// await sendTransaction(ergonamePrice, searchName, raddr);
+          let tx = await sendTransaction(ergonamePrice, searchName, raddr);
           console.log(`TX: ${tx}`);
         })
       };
