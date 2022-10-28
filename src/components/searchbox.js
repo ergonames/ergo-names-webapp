@@ -16,23 +16,28 @@ function SearchBox() {
         console.log(`Searching for: ${searchName}`);
         let tokenResolveData = await resolveErgoname(searchName);
         console.log(`Resolved data: ${tokenResolveData}`);
-        if (tokenResolveData === null) {
+        if (tokenResolveData.registered === false) {
           setResolvedAddress("");
+          setTokenId("");
+          setErgonamePrice(1000000);
+          setRegisteredAddress("");
+          setResolvedPrice(0);
+          setResolvedDate("");
         } else {
           let address = tokenResolveData.tokenAddress;
           setResolvedAddress(address);
+          console.log(`Resolved address: ${resolvedAddress}`);
+          const registrationData = await resolveErgonameRegistrationInformation(searchName);
+          console.log(`Registration data: ${registrationData}`);
+          setRegisteredAddress(registrationData.address);
+          setTokenId(registrationData.tokenId);
+          setResolvedPrice(1000000);
+          let timestamp = registrationData.timestamp;
+          timestamp = Number(timestamp);
+          let date = new Date(timestamp);
+          const options = { year: 'numeric', month: 'long', day: 'numeric' };
+          setResolvedDate(date.toLocaleDateString("en-US", options));
         };
-        console.log(`Resolved address: ${resolvedAddress}`);
-        const registrationData = await resolveErgonameRegistrationInformation(searchName);
-        setRegisteredAddress(registrationData.address);
-        setTokenId(registrationData.tokenId);
-        setErgonamePrice(1000000);
-        setResolvedPrice(1000000);
-        let timestamp = registrationData.timestamp;
-        timestamp = Number(timestamp);
-        let date = new Date(timestamp);
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        setResolvedDate(date.toLocaleDateString("en-US", options));
         setHasResolved(true);
       };
     
