@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { resolveErgoname, resolveErgonameRegistrationInformation } from "ergonames";
+import { reformatErgonameInput, resolveErgoname, resolveErgonameRegistrationInformation } from "ergonames";
 import { sendTransaction } from "ergonames-tx-lib";
 import Swal from "sweetalert2";
 
@@ -105,7 +105,7 @@ function SearchBox() {
               <div className="mx-auto mt-36 w-[45%] h-[450px] rounded-xl bg-gray-700/50">
                 <h1 className="text-white pb-2 pt-4 pl-8 text-2xl font-bold">Search</h1>
                 <div className="mx-auto my-4 block">
-                  <input type="text" className="ml-[9%] w-3/5 mx-auto my-2 px-2 py-3 bg-gray-500 text-black placeholder:text-black" placeholder="Enter an ErgoName..." onChange={(e) => setSearchName(e.target.value)} />
+                  <input type="text" className="ml-[9%] w-3/5 mx-auto my-2 px-2 py-3 bg-gray-500 text-black placeholder:text-black" placeholder="Enter an ErgoName..." onChange={(e) => setSearchName(reformatErgonameInput(e.target.value))} />
                   <button className="mx-auto my-2 w-1/5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4" onClick={submitSearch}>Search</button>
                 </div>
               </div>
@@ -118,7 +118,7 @@ function SearchBox() {
                 <div className="mx-auto mt-36 w-[45%] h-[450px] rounded-xl bg-gray-700/50">
                 <h1 className="text-white pb-2 pt-4 pl-8 text-2xl font-bold">Search</h1>
                 <div className="mx-auto my-4 block">
-                    <input type="text" className="ml-[9%] w-3/5 mx-auto my-2 px-2 py-3 bg-gray-500 text-black placeholder:text-black" placeholder="Enter an ErgoName..." onChange={(e) => setSearchName(e.target.value)} />
+                    <input type="text" className="ml-[9%] w-3/5 mx-auto my-2 px-2 py-3 bg-gray-500 text-black placeholder:text-black" placeholder="Enter an ErgoName..." onChange={(e) => setSearchName(reformatErgonameInput(e.target.value))} />
                     <button className="mx-auto my-2 w-1/5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4" onClick={submitSearch}>Search</button>
                 </div>
                 <div>
@@ -139,7 +139,7 @@ function SearchBox() {
                 <div className="mx-auto mt-36 w-[45%] h-[450px] rounded-xl bg-gray-700/50">
                 <h1 className="text-white pb-2 pt-4 pl-8 text-2xl font-bold">Search</h1>
                 <div className="mx-auto my-4 block">
-                    <input type="text" className="ml-[9%] w-3/5 mx-auto my-2 px-2 py-3 bg-gray-500 text-black placeholder:text-black" placeholder="Enter an ErgoName..." onChange={(e) => setSearchName(e.target.value)} />
+                    <input type="text" className="ml-[9%] w-3/5 mx-auto my-2 px-2 py-3 bg-gray-500 text-black placeholder:text-black" placeholder="Enter an ErgoName..." onChange={(e) => setSearchName(reformatErgonameInput(e.target.value))} />
                     <button className="mx-auto my-2 w-1/5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4" onClick={submitSearch}>Search</button>
                 </div>
                 <div>
