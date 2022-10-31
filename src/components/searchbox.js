@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { reformatErgonameInput, resolveErgoname, resolveErgonameRegistrationInformation } from "ergonames";
+import { checkNameValid, reformatErgonameInput, resolveErgoname, resolveErgonameRegistrationInformation } from "ergonames";
 import { sendTransaction } from "ergonames-tx-lib";
 import Swal from "sweetalert2";
 
@@ -44,23 +44,32 @@ function SearchBox() {
     
       const registerName = async () => {
         console.log(`Registering name: ${searchName}`);
-        window.ergoConnector.nautilus.connect().then(async () => {
-          console.log("Connected to Nautilus");
-          // let raddr = window.ergo.get_change_address();
-          let raddr = window.localStorage.getItem("walletAddress");
-          console.log(`Address: ${raddr}`);
-          let tx = await sendTransaction(ergonamePrice, searchName, raddr);
-          console.log(`TX ID: ${tx.txId} - Box ID: ${tx.boxId}`);
-          let apiResponse = await postAPIInformation(tx.txId, tx.boxId);
-          console.log(`API Response: ${apiResponse}`);
-          let explorerLink = 'https://testnet.ergoplatform.com/en/transactions/' + tx.txId;
+        let validName = checkNameValid(searchName);
+        if (validName === false) {
           Swal.fire({
-            title: `Now registering ${searchName}`,
-            html: `<a href=${explorerLink}>${tx.txId}</a>`,
-            icon: "success",
-            confirmButtonText: "Ok",
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Invalid name',
           });
-        })
+        } else {
+          window.ergoConnector.nautilus.connect().then(async () => {
+            console.log("Connected to Nautilus");
+            // let raddr = window.ergo.get_change_address();
+            let raddr = window.localStorage.getItem("walletAddress");
+            console.log(`Address: ${raddr}`);
+            let tx = await sendTransaction(ergonamePrice, searchName, raddr);
+            console.log(`TX ID: ${tx.txId} - Box ID: ${tx.boxId}`);
+            let apiResponse = await postAPIInformation(tx.txId, tx.boxId);
+            console.log(`API Response: ${apiResponse}`);
+            let explorerLink = 'https://testnet.ergoplatform.com/en/transactions/' + tx.txId;
+            Swal.fire({
+              title: `Now registering ${searchName}`,
+              html: `<a href=${explorerLink}>${tx.txId}</a>`,
+              icon: "success",
+              confirmButtonText: "Ok",
+            });
+          })
+        }
       };
 
       const exploreAddress = async () => {

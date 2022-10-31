@@ -8,7 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "buffer": "^6.0.3",
     "ergo-dapp-connector": "^0.1.1",
-    "ergonames": "^0.6.2",
+    "ergonames": "^0.6.3",
     "ergonames-tx-lib": "^0.6.1",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
