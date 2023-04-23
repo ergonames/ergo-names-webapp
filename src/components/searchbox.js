@@ -44,7 +44,7 @@ function SearchBox() {
     
       const registerName = async () => {
         console.log(`Registering name: ${searchName}`);
-        let validName = checkNameValid(searchName);
+        let validName = true // checkNameValid(searchName);
         if (validName === false) {
           Swal.fire({
             icon: 'error',
@@ -52,15 +52,11 @@ function SearchBox() {
             text: 'Invalid name',
           });
         } else {
-          window.ergoConnector.nautilus.connect().then(async () => {
-            console.log("Connected to Nautilus");
+         window.ergoConnector.nautilus.connect().then(async () => {
             // let raddr = window.ergo.get_change_address();
             let raddr = window.localStorage.getItem("walletAddress");
-            console.log(`Address: ${raddr}`);
-            let tx = await sendTransaction(ergonamePrice, searchName, raddr);
-            console.log(`TX ID: ${tx.txId} - Box ID: ${tx.boxId}`);
-            let apiResponse = await postAPIInformation(tx.txId, tx.boxId);
-            console.log(`API Response: ${apiResponse}`);
+            let tx = await sendTransaction(searchName, 1000000000.0, raddr);
+            console.log(`TX ID: ${tx.txId}`);
             let explorerLink = 'https://testnet.ergoplatform.com/en/transactions/' + tx.txId;
             Swal.fire({
               title: `Now registering ${searchName}`,
@@ -75,25 +71,6 @@ function SearchBox() {
       const exploreAddress = async () => {
         console.log(`Exploring address: ${resolvedAddress}`);
         window.open('https://testnet.ergoplatform.com/en/addresses/' + resolvedAddress, '_blank');
-      };
-
-      const postAPIInformation = async (txId, boxId) => {
-        console.log("Sending API request");
-        let url = process.env.REACT_APP_API_REQUEST_URL;
-        let data = {
-          "paymentTxId": txId,
-          "mintingRequestBoxId": boxId,
-        };
-        let response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        });
-        let json = await response.json();
-        console.log(json);
-        return json;
       };
 
       const copyTokenId = () => {
